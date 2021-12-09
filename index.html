@@ -67,11 +67,8 @@
         function initMap() {
 
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: {
-                    "lat": 38.05755463564087,
-                    "lng": -98.69399219968297
-                },
+                zoom: 13,
+                center: { lat: 41.60413612609077, lng: -87.35143823338635 },
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 styles: [
                     {
@@ -235,8 +232,9 @@
                 ]
             });
 
-            const zones = ['M3', 'M2-1', 'M1-1']
-            fetch("zoning.json")
+            const zones = ['M3', 'M2-1', 'M1-1', 'M2-2', 'M1-2']
+            const zones1 = [58556, 61015, 59918]
+            fetch("layer1.geojson")
                 .then(i => i.json())
                 .then(data => {
                     console.log('data', data);
@@ -246,8 +244,32 @@
                         "features": poly
                     }
                     console.log('featueCollection', featueCollection);
-                })
 
+                    map.data.addGeoJson(featueCollection);
+
+
+
+                    const zone = { "type": "FeatureCollection", "features": [{ "type": "Feature", "properties": { "stroke": "#555555", "stroke-width": 2, "stroke-opacity": 1, "fill": "#555555", "fill-opacity": 0.5 }, "geometry": { "type": "Polygon", "coordinates": [[[-87.4222469329834, 41.636967318405404], [-87.42211818695068, 41.63667865515811], [-87.41971492767334, 41.63525135676868], [-87.412269115448, 41.63154664829779], [-87.41244077682495, 41.63321459534665], [-87.40759134292601, 41.63124192253966], [-87.40714073181152, 41.631306075450546], [-87.40714073181152, 41.63260515815954], [-87.41980075836182, 41.6393407227541], [-87.4207878112793, 41.63839457879456], [-87.42095947265625, 41.63794555646193], [-87.4222469329834, 41.636967318405404]]] } }] }
+                    //map.data.addGeoJson(zone);
+
+
+                    map.data.setStyle(function (feature) {
+                        var zoning = feature.getProperty('zoning');
+                        console.log('feature', zoning);
+                        let color = zoning ? 'red' : 'blue';
+
+                        var objectid = feature.getProperty('objectid');
+                        console.log('objectid', objectid);
+                        if (zones1.includes(objectid)) {
+                            color = 'blue'
+                        }
+
+                        return {
+                            fillColor: color,
+                            strokeWeight: 0
+                        };
+                    });
+                })
         }
 
 
