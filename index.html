@@ -289,8 +289,8 @@
             map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
 
             const zones = ['M3', 'M2-1', 'M1-1', 'M2-2', 'M1-2']
-            const zones1 = [58556, 61015, 59918]
-            fetch("layer1.geojson")
+            const zones1 = [ 61015, 59918]
+            fetch("2.geojson")
                 .then(i => i.json())
                 .then(data => {
                     console.log('data', data);
